@@ -1,17 +1,15 @@
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
 import type { SignInForm } from "@/components/login-form";
+import {
+  clearAccessTokenCookie,
+  getAccessTokenFromCookie,
+  setAccessTokenCookie,
+} from "@/lib/auth-session";
 import { useEffect, useState, type SubmitEvent } from "react";
 import type { LoggedUser } from "@/types";
 
 const baseURL = "https://dummyjson.com";
-
-function getCookie(cookieName: string) {
-  return document.cookie
-    .split("; ")
-    .find((c) => c.startsWith(`${cookieName}=`))
-    ?.split("=")[1];
-}
 
 export function useAuth() {
   const [loggedUser, setLoggedUser] = useState<LoggedUser | null>(null);
@@ -19,10 +17,13 @@ export function useAuth() {
 
   useEffect(() => {
     async function getAuthenticatedUser() {
+      const token = getAccessTokenFromCookie();
+      if (!token) return;
+
       const response = await fetch("https://dummyjson.com/auth/me", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${getCookie("@pitang/accessToken")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -37,7 +38,7 @@ export function useAuth() {
   }, []);
 
   async function handleLogout() {
-    document.cookie = "@pitang/accessToken=; path=/; Max-Age=0";
+    clearAccessTokenCookie();
 
     navigate({ to: "/login" });
   }
@@ -66,7 +67,7 @@ export function useAuth() {
 
     toast.success("Welcome...");
 
-    document.cookie = `@pitang/accessToken=${json.accessToken}; path=/; Max-Age=86400`;
+    setAccessTokenCookie(json.accessToken);
 
     navigate({ to: "/dashboard" });
   }
