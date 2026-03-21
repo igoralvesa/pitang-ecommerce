@@ -28,7 +28,8 @@ export function useAuth() {
       });
 
       if (!response.ok) {
-        return toast.error("Something went wrong");
+        toast.error("Something went wrong");
+        return;
       }
 
       setLoggedUser(await response.json());
@@ -62,7 +63,8 @@ export function useAuth() {
     const json = await response.json();
 
     if (!response.ok) {
-      return toast.error(json.message);
+      toast.error(json.message);
+      return;
     }
 
     toast.success("Welcome...");

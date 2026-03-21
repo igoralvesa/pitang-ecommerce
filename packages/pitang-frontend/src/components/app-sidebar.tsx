@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { FrameIcon, PieChartIcon, MapIcon, TerminalIcon, PackageIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { Link } from "@tanstack/react-router";
 
 const data = {
   navMain: [],
@@ -49,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<a href="#" />}>
+            <SidebarMenuButton size="lg" render={<Link to="/dashboard" />}>
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <TerminalIcon className="size-4" />
               </div>
@@ -75,7 +76,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           user={{
             avatar: loggedUser?.image || "",
             email: loggedUser?.email || "",
-            name: `${loggedUser?.firstName} ${loggedUser?.lastName}` || "",
+            name: `${loggedUser?.firstName ?? ""} ${loggedUser?.lastName ?? ""}`.trim(),
           }}
         />
       </SidebarFooter>
