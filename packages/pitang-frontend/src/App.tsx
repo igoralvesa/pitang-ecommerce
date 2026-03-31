@@ -38,7 +38,7 @@ function Timer({ onComplete }: { onComplete: () => void }) {
   const [isRunning, setIsRunning] = useState(false);
   const [sessions, setSessions] = useState(0);
 
-  console.log('teste');
+  console.log('teste1');
 
   const switchMode = useCallback((newMode: TimerMode) => {
     setMode(newMode);
